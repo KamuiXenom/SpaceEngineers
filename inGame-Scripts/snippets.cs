@@ -39,3 +39,17 @@
 			light.SetValue("Color", color);
 		}
 	}
+	
+/**
+*	disable 'UseConveyorSystem'
+*
+*	@param list of IMyTerminalBlock
+*/
+	void disableConveyorUse( List<IMyTerminalBlock> group ) {
+		for( int i = 0; i < group.Count; ++i ){
+			IMyTerminalBlock block = group[i];
+			if ( block.HasAction( "UseConveyor" ) ) {
+				block.SetUseConveyorSystem( false );
+			}
+		}
+	}
