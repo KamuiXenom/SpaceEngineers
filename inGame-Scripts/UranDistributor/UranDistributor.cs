@@ -29,10 +29,10 @@
 	}
 	
 // move item from cargo to cargo with given amount
-	bool moveItem( string s_item, float i_amount, IMyInventory o_source, IMyInventory o_target ) {
+	bool moveItem( string s_item, float i_amount, IMyInventory o_source_inventory, IMyInventory o_target_inventory ) {
 		
 		//This ist the Method to Transfer the Selectet Item from the Source_inventory to the Destination Inventory   
-		dstInventory.TransferItemFrom( source_invetory, itemCount, null, true, null );
+		o_target_inventory.TransferItemFrom( o_source_inventory, itemCount, null, true, null );
 		
 	}
 	
