@@ -1,3 +1,5 @@
+// define container to store uranium
+	string s_uranium_storage = "";
 
 // define capacity of uranium in reactors
 	float i_reactor_fuel_size = 2.5f;
@@ -24,6 +26,14 @@
 				block.SetUseConveyorSystem( false );
 			}
 		}
+	}
+	
+// move item from cargo to cargo with given amount
+	bool moveItem( string s_item, float i_amount, IMyInventory o_source, IMyInventory o_target ) {
+		
+		//This ist the Method to Transfer the Selectet Item from the Source_inventory to the Destination Inventory   
+		dstInventory.TransferItemFrom( source_invetory, itemCount, null, true, null );
+		
 	}
 	
 //? move item from cargo to other cargo
