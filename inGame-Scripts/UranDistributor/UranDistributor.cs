@@ -1,11 +1,14 @@
-﻿// define container to store uranium
-	string s_uranium_storage = "";
+﻿// define container to store uranium on one place
+	string s_storage = "";
 
 // define capacity of uranium in reactors
 	float i_reactor_fuel_size = 2.5f;
 	
 // list of reactors
 	List<IMyTerminalBlock> g_reactors = null;
+	
+// list of storages with uranium
+	List<IMyInventory> g_ingots_storage = null;
 	
 // storage object
 	IMyInventory g_storage = null;
@@ -22,32 +25,41 @@
 	// find uranium storage
 		if ( !getUraniumStorage() ) {
 			
-			l_echo.Add( "! storage container not found" );
+			l_echo.Add( "! centered storage container not found" );
 			
 		}			
 		
 	// get all reactors in current grid
 		g_reactors = new List<IMyTerminalBlock>();
 		GridTerminalSystem.GetBlocksOfType<IMyReactor>( g_reactors );
-			
-	// info reactor count
-		l_echo.Add( "* " + g_reactors.Count + " Reactors found" );
 		
 	// check count of reactors
 		if ( g_reactors.Count > 0 ) {
+		
+		// info reactor count
+			l_echo.Add( "* " + g_reactors.Count + " reactors found" );
+		
+		// find uranium ingots
+			if ( !getUraniumIngots() ) {
+				
+				l_echo.Add( "! can't find any uranium ingot" );
+				
+			} else {
 			
-		// disable conveyor usage on all reactors
-			disableConveyorUsage( g_reactors );
+			// disable conveyor usage on all reactors
+				disableConveyorUsage( g_reactors );
+				
+			// roll all reactors for refueling
+				
 			
-		// find all uranium ingots
-			
-			
-		// roll all reactors for fuel detection
+			}
 			
 		}
+		
+	// no reactors
 		else {
 			
-			l_echo.Add( "! no reactors found" );
+			l_echo.Add( "! no reactors found; Exit" );
 			
 		}
 		
@@ -74,12 +86,40 @@
 		if ( g_storage is IMyInventory )
 			return true;
 		
-		IMyInventoryOwner o_storage = (IMyInventoryOwner)GridTerminalSystem.GetBlockWithName( s_uranium_storage );
+		IMyInventoryOwner o_storage = (IMyInventoryOwner)GridTerminalSystem.GetBlockWithName( s_storage );
 		if ( o_storage is IMyInventoryOwner ) {
 			g_storage = o_storage.GetInventory(0);
 			return true;
 		}
 		
+		return false;
+		
+	}
+	
+// get all uranium ingots in current available grid
+	bool getUraniumIngots() {
+		
+		float i_all_amount = 0.0f;
+		
+	// get all storages
+		List<IMyInventoryOwner> l_inventorys = new List<IMyInventoryOwner>();
+		GetBlocksOfType<IMyInventoryOwner>( l_inventorys );
+		
+		if ( l_inventory.Count > 0 ) { 
+		
+		// roll found inventorys
+			for ( int i = 0; i < l_inventory.Count; ++i ) {
+				
+				
+				
+			}
+			
+		// check amount
+			if ( i_all_amount > 0.0f ) {return true;}
+		
+		}
+		
+	// ------
 		return false;
 		
 	}
