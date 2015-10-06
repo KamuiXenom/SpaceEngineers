@@ -1,4 +1,4 @@
-﻿// define container to store uranium on one place
+// define container to store uranium on one place
 	string s_storage = "";
 
 // define capacity of uranium in reactors
@@ -44,10 +44,13 @@
 				
 				l_echo.Add( "! can't find any uranium ingot" );
 				
+			// enable conveyer for automatic refueling
+				setConveyorUsage( g_reactors, true );
+				
 			} else {
 			
 			// disable conveyor usage on all reactors
-				disableConveyorUsage( g_reactors );
+				setConveyorUsage( g_reactors, false );
 				
 			// roll all reactors for refueling
 				
@@ -70,11 +73,11 @@
 	}
 
 // disable 'UseConveyorSystem'
-	void disableConveyorUsage( List<IMyTerminalBlock> group ) {
-		for( int i = 0; i < group.Count; ++i ){
-			IMyTerminalBlock block = group[i];
-			if ( block.HasAction( "UseConveyor" ) ) {
-				block.SetUseConveyorSystem( false );
+	void setConveyorUsage( List<IMyTerminalBlock> l_group, bool b_usage = false ) {
+		for( int i = 0; i < l_group.Count; ++i ){
+			IMyTerminalBlock o_block = l_group[i];
+			if ( o_block.HasAction( "UseConveyor" ) ) {
+				o_block.SetUseConveyorSystem( b_usage );
 			}
 		}
 	}
@@ -110,7 +113,36 @@
 		// roll found inventorys
 			for ( int i = 0; i < l_inventory.Count; ++i ) {
 				
+			// define inventory index
+				int = i_inventory_index = 0;
 				
+			// check for refinery
+				if ( o_inventory is IMyRefinery ) { i_inventory_index = 1; }
+				
+			// check !assembler
+				if ( !( o_inventory is IMyAssembler ) ) {
+					
+				// get inventory
+					IMyInventory o_inventory = l_inventory[i].GetInventory( i_inventory_index );
+						
+					IMyInventoryItem o_item = getItem( o_inventory, "uranium_ingot" );
+					i_all_amount+= (float)o_item.Amount;
+					
+				// is an central corgo defined then move to it
+					if ( g_storage is IMyInventory ) { 
+						
+						moveItem( o_inventory, g_storage, "uranium_ingot" );
+						
+					}
+					
+				// none central corgo
+					else {
+						
+						
+						
+					}
+					
+				}
 				
 			}
 			
@@ -188,6 +220,18 @@
 		
 	// -------
 		return 0;
+		
+	}
+	
+// get item by given subtype
+	IMyInventoryItem getItem( IMyInventory o_inventory, string s_item_name ) {
+		
+	// get index of item
+		int i_index = getItemIndex( IMyInventory o_inventory, string s_item_name );
+		
+	// return item object
+		List<IMyInventoryItem> l_items = o_inventory.GetItems();
+		return (IMyInventoryItem)l_items[i_index];
 		
 	}
 
